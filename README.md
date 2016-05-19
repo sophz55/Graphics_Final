@@ -1,2 +1,2 @@
-# Graphics_Final
-Graphics Final Project - Samuel Zhang and Sophia Zheng
+# animation
+Computer Graphics HW#8: mdl-animation
