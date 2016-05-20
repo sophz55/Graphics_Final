@@ -54,6 +54,107 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
+      c.red = rand() %255;
+      c.green = rand() %255;
+      c.blue = rand() %255;
+
+      int x0, x1, y, 
+          yb, ym, yt, 
+          xb, xm, xt;
+
+      //find B, M, T
+      if ( polygons->m[1][i] < polygons->m[1][i+1]){
+	if ( polygons->m[1][i] < polygons->m[1][i+2]){
+	  xb = polygons->m[0][i];
+	  yb = polygons->m[1][i];
+	  if ( polygons->m[1][i+1] < polygons->m[1][i+2]){
+	    xm = polygons->m[0][i+1];
+	    ym = polygons->m[1][i+1];
+	    xt = polygons->m[0][i+2];
+	    yt = polygons->m[1][i+2];
+	  }
+	  else {
+	    xm = polygons->m[0][i+2];
+	    ym = polygons->m[1][i+2];
+	    xt = polygons->m[0][i+1];
+	    yt = polygons->m[1][i+1];
+	  }
+	}
+	else {
+	  xb = polygons->m[0][i+2];
+	  yb = polygons->m[1][i+2];
+	  xm = polygons->m[0][i];
+	  ym = polygons->m[1][i];
+	  xt = polygons->m[0][i+1];
+	  yt = polygons->m[1][i+1];
+	}
+      }
+      else {
+	if ( polygons->m[1][i+1] < polygons->m[1][i+2]){
+	  xb = polygons->m[0][i+1];
+	  yb = polygons->m[1][i+1];
+	  if ( polygons->m[1][i] < polygons->m[1][i+2]){
+	    xm = polygons->m[0][i];
+	    ym = polygons->m[1][i];
+	    xt = polygons->m[0][i+2];
+	    yt = polygons->m[1][i+2];
+	  }
+	  else {
+	    xm = polygons->m[0][i+2];
+	    ym = polygons->m[1][i+2];
+	    xt = polygons->m[0][i];
+	    yt = polygons->m[1][i];
+	  }
+	}
+	else {
+	  xb = polygons->m[0][i+2];
+	  yb = polygons->m[1][i+2];
+	  xm = polygons->m[0][i+1];
+	  ym = polygons->m[1][i+1];
+	  xt = polygons->m[0][i];
+	  yt = polygons->m[1][i];
+	}
+      }      
+      printf( "xb: %d, xm: %d, xt: %d\n", xb, xm, xt);
+      printf( "yb: %d, ym: %d, yt: %d\n", yb, ym, yt);
+
+      if (yb == yt) {
+	printf("backface!\n");
+	return;
+      }
+
+      double delt0, delt1, dx0, dx1;
+      x0 = xb;
+      x1 = xb;
+      if (yb == ym) {
+	x1 = xm;
+      }
+      dx0 = (double)x0;
+      dx1 = (double)x1;
+
+      for (y = yb; y < yt; y++){
+	x0 = (int)dx0;
+	x1 = (int)dx1;
+	delt0 = ((double)xt - xb) / (yt - yb);
+	printf("delt0 %f = (xt %d - xb %d)/ (yt %d - yb %d)\n", delt0, xt, xb, yt, yb);
+	if (y < ym) {
+	  delt1 = ((double)xm - xb) / (ym - yb);
+	  draw_line( x0, y, x1, y, s, c );
+	  printf("called draw_line, x0=%d, x1=%d, y=%d\n", x0,x1,y);
+	}	
+	else {
+	  delt1 = ((double)xt - xm) / (yt - ym);
+	  draw_line( x0, y, x1, y, s, c );
+	  printf("called draw_line, x0=%d, x1=%d, y=%d\n", x0,x1,y);
+	}
+	printf("delt0: %f, delt1: %lf\n", delt0, delt1);
+	printf("x1: %d, y: %d\n", x1, y);
+	dx0 += delt0;
+	dx1 += delt1;
+	printf("x1: %d, y: %d\n", x1, y);
+      }
+
+      //border
       draw_line( polygons->m[0][i],
 		 polygons->m[1][i],
 		 polygons->m[0][i+1],

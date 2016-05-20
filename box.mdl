@@ -1,0 +1,6 @@
+
+push
+move 250 250 0
+box -100 150 25 200 300 50
+display
+quit
