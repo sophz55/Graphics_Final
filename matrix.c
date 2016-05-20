@@ -389,3 +389,21 @@ struct matrix * generate_curve_coefs( double p1, double p2,
   return coefs;  
 }
 
+/* ==================== struct matrix * buffer_init(); ==========
+   Inputs:
+          struct matrix * buffer
+   Output:
+          struct matrix * buffer
+   
+   Initializes a buffer (z-buffer) to the LONG_MIN for z-buffer comparison.
+
+*/
+struct matrix * buffer_init( struct matrix * buffer ) {
+  int r, c;
+  for( r=0; r < buffer->rows; r++) {
+    for( c=0; c < buffer->cols; c++) 
+      m->m[r][c] = LONG_MIN;
+  }
+  return buffer;
+}
+

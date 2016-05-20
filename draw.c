@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h> //Use LONG_MIN for smallest possible value in z-buffer
 
 #include "ml6.h"
 #include "display.h"
 #include "draw.h"
 #include "matrix.h"
 #include "gmath.h"
+
 
 /*======== void add_polygon() ==========
 Inputs:   struct matrix *surfaces

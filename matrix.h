@@ -32,4 +32,8 @@ struct matrix * make_bezier();
 struct matrix * make_hermite();
 struct matrix * generate_curve_coefs( double p1, double p2,
 				      double p3, double p4, int type );
+
+//z-buffer routines
+struct matrix * buffer_init( struct matrix * buffer );
+
 #endif
