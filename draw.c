@@ -51,8 +51,9 @@ triangles
 jdyrlandweaver
 ====================*/
 void draw_polygons( struct matrix *polygons, screen s, color c ) {
-  
+
   int i;  
+  
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
@@ -117,45 +118,34 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	  yt = polygons->m[1][i];
 	}
       }      
-      printf( "xb: %d, xm: %d, xt: %d\n", xb, xm, xt);
-      printf( "yb: %d, ym: %d, yt: %d\n", yb, ym, yt);
 
-      if (yb == yt) {
-	printf("backface!\n");
-	return;
-      }
-
-      double delt0, delt1, dx0, dx1;
-      x0 = xb;
-      x1 = xb;
-      if (yb == ym) {
-	x1 = xm;
-      }
-      dx0 = (double)x0;
-      dx1 = (double)x1;
-
-      for (y = yb; y < yt; y++){
-	x0 = (int)dx0;
-	x1 = (int)dx1;
-	delt0 = ((double)xt - xb) / (yt - yb);
-	printf("delt0 %f = (xt %d - xb %d)/ (yt %d - yb %d)\n", delt0, xt, xb, yt, yb);
-	if (y < ym) {
-	  delt1 = ((double)xm - xb) / (ym - yb);
-	  draw_line( x0, y, x1, y, s, c );
-	  printf("called draw_line, x0=%d, x1=%d, y=%d\n", x0,x1,y);
-	}	
-	else {
-	  delt1 = ((double)xt - xm) / (yt - ym);
-	  draw_line( x0, y, x1, y, s, c );
-	  printf("called draw_line, x0=%d, x1=%d, y=%d\n", x0,x1,y);
+      if (yb != yt) {
+	double delt0, delt1, dx0, dx1;
+	x0 = xb;
+	x1 = xb;
+	if (yb == ym) {
+	  x1 = xm;
 	}
-	printf("delt0: %f, delt1: %lf\n", delt0, delt1);
-	printf("x1: %d, y: %d\n", x1, y);
-	dx0 += delt0;
-	dx1 += delt1;
-	printf("x1: %d, y: %d\n", x1, y);
+	dx0 = (double)x0;
+	dx1 = (double)x1;
+	
+	for (y = yb; y < yt; y++){
+	  x0 = (int)dx0;
+	  x1 = (int)dx1;
+	  delt0 = ((double)xt - xb) / (yt - yb);
+	  if (y < ym) {
+	    delt1 = ((double)xm - xb) / (ym - yb);
+	    draw_line( x0, y, x1, y, s, c );
+	  }	
+	  else {
+	    delt1 = ((double)xt - xm) / (yt - ym);
+	    draw_line( x0, y, x1, y, s, c );
+	  }
+	  dx0 += delt0;
+	  dx1 += delt1;
+	}
       }
-
+      
       //border
       draw_line( polygons->m[0][i],
 		 polygons->m[1][i],
