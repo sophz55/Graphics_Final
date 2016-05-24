@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h>
 
 #include "matrix.h"
 
@@ -402,7 +403,7 @@ struct matrix * buffer_init( struct matrix * buffer ) {
   int r, c;
   for( r=0; r < buffer->rows; r++) {
     for( c=0; c < buffer->cols; c++) 
-      m->m[r][c] = LONG_MIN;
+      buffer->m[r][c] = LONG_MIN;
   }
   return buffer;
 }
