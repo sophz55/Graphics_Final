@@ -1,6 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include "matrix.h"
+
 void plot( screen s, color c, int x, int y, int z, struct matrix *zb );
 void clear_screen( screen s);
 void save_ppm( screen s, char *file);

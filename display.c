@@ -65,6 +65,8 @@ Inputs:   screen s
          color c
          int x
          int y 
+	 int z
+	 struct matrix *zb
 Returns: 
 Sets the color at pixel x, y to the color represented by c
 Note that s[0][0] will be the upper left hand corner 
