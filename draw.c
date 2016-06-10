@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <limits.h> //Use LONG_MIN for smallest possible value in z-buffer
 
 #include "ml6.h"
 #include "display.h"
 #include "draw.h"
 #include "matrix.h"
 #include "gmath.h"
-
 
 /*======== void add_polygon() ==========
 Inputs:   struct matrix *surfaces
@@ -686,9 +684,9 @@ void draw_lines( struct matrix * points, screen s, color c) {
 }
 
 
-void draw_line(int x0, int y0, int x1, int y1, int z0, int z1, screen s, color c) {
+void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c) {
  
-  int x, y, d, dx, dy;
+  int x, y, z, d, dx, dy;
 
   x = x0;
   y = y0;
@@ -707,14 +705,14 @@ void draw_line(int x0, int y0, int x1, int y1, int z0, int z1, screen s, color c
 
   //positive slope: Octants 1, 2 (5 and 6)
   if ( dy > 0 ) {
-
+    
     //slope < 1: Octant 1 (5)
     if ( dx > dy ) {
       d = dy - ( dx / 2 );
-  
+      
       while ( x <= x1 ) {
-	plot(s, c, x, y, );
-
+	plot(s, c, x, y, z);
+	
 	if ( d < 0 ) {
 	  x = x + 1;
 	  d = d + dy;
@@ -726,12 +724,12 @@ void draw_line(int x0, int y0, int x1, int y1, int z0, int z1, screen s, color c
 	}
       }
     }
-
+    
     //slope > 1: Octant 2 (6)
     else {
       d = ( dy / 2 ) - dx;
       while ( y <= y1 ) {
-
+	
 	plot(s, c, x, y );
 	if ( d > 0 ) {
 	  y = y + 1;

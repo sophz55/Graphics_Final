@@ -13,6 +13,15 @@ for red, green and blue respectively
 #include "ml6.h"
 #include "display.h"
 #include "matrix.h"
+#include <limits.h> //Use LONG_MIN for smallest possible value in z-buffer
+
+void init_z_buffer( struct matrix* zb ) {
+  int x, y;
+
+  for( x = 0; x < XRES; x++ )
+    for( y = 0; y < YRES; y++ )
+      zb -> m[x][y] = LONG_MIN;
+}
 
 color change_color( int i ) {
   
@@ -79,11 +88,14 @@ pixel 0, 0 located at the lower left corner of the screen
 jdyrlandweaver
 ====================*/
 void plot( screen s, color c, int x, int y, int z, struct matrix *zb ) {
+
+  //// Init Z-Buffer first
+  
   int newy = YRES - 1 - y;
   if ( x >= 0 && x < XRES && newy >=0 && newy < YRES ) {
     if( z >= zb->m[x][newy] ) {
        s[x][newy] = c;
-       zb->m[x][newy] = z;
+       zb->m[x][newy] = z; // Init z-buffer function up top
     }
   }
 }
