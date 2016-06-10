@@ -48,7 +48,7 @@ triangles
 04/16/13 13:13:27
 jdyrlandweaver
 ====================*/
-void draw_polygons( struct matrix *polygons, screen s, color c ) {
+void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *zb ) {
 
   int i;  
   
@@ -147,19 +147,25 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
       //border
       draw_line( polygons->m[0][i],
 		 polygons->m[1][i],
+		 polygons->m[2][i],
 		 polygons->m[0][i+1],
 		 polygons->m[1][i+1],
-		 s, c);
+		 polygons->m[2][i+1],
+		 s, c, zb);
       draw_line( polygons->m[0][i+1],
 		 polygons->m[1][i+1],
+		 polygons->m[2][i+1],
 		 polygons->m[0][i+2],
 		 polygons->m[1][i+2],
-		 s, c);
+		 polygons->m[2][i+2],
+		 s, c, zb);
       draw_line( polygons->m[0][i+2],
 		 polygons->m[1][i+2],
+		 polygons->m[2][i+2],
 		 polygons->m[0][i],
 		 polygons->m[1][i],
-		 s, c);
+		 polygons->m[2][i],
+		 s, c, zb);
     }
   }
 }
@@ -684,12 +690,14 @@ void draw_lines( struct matrix * points, screen s, color c) {
 }
 
 
-void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c) {
+void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c, struct matrix * zb) {
  
-  int x, y, z, d, dx, dy;
+  int x, y, d, dx, dy;
+  double z, dz;
 
   x = x0;
   y = y0;
+  z = (double)z0;
   
   //swap points so we're always draing left to right
   if ( x0 > x1 ) {
@@ -702,6 +710,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
   //need to know dx and dy for this version
   dx = (x1 - x) * 2;
   dy = (y1 - y) * 2;
+  dz = (z1 - z) / sqrt( dx * dx / 4 + dy * dy / 4 + (z1-z) * (z1 - z) );
 
   //positive slope: Octants 1, 2 (5 and 6)
   if ( dy > 0 ) {
@@ -711,7 +720,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
       d = dy - ( dx / 2 );
       
       while ( x <= x1 ) {
-	plot(s, c, x, y, z);
+	plot(s, c, x, y, (int)z, zb);
 	
 	if ( d < 0 ) {
 	  x = x + 1;
@@ -722,6 +731,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 	  y = y + 1;
 	  d = d + dy - dx;
 	}
+	z += dz;
       }
     }
     
@@ -730,7 +740,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
       d = ( dy / 2 ) - dx;
       while ( y <= y1 ) {
 	
-	plot(s, c, x, y );
+	plot(s, c, x, y, (int)z, zb);
 	if ( d > 0 ) {
 	  y = y + 1;
 	  d = d - dx;
@@ -740,6 +750,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 	  x = x + 1;
 	  d = d + dy - dx;
 	}
+	z += dz;
       }
     }
   }
@@ -754,7 +765,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
   
       while ( x <= x1 ) {
 
-	plot(s, c, x, y);
+	plot(s, c, x, y, (int)z, zb);
 
 	if ( d > 0 ) {
 	  x = x + 1;
@@ -765,6 +776,8 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 	  y = y - 1;
 	  d = d + dy + dx;
 	}
+	z += dz;
+
       }
     }
 
@@ -775,7 +788,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 
       while ( y >= y1 ) {
 	
-	plot(s, c, x, y );
+	plot(s, c, x, y, (int)z, zb );
 	if ( d < 0 ) {
 	  y = y - 1;
 	  d = d + dx;
@@ -785,6 +798,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 	  x = x + 1;
 	  d = d + dy + dx;
 	}
+	z += dz;
       }
     }
   }
