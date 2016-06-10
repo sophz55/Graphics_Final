@@ -1,4 +1,4 @@
-#include <stdio.h>
+≈≈≈≈≈≈≈≈#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -51,7 +51,8 @@ jdyrlandweaver
 void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *zb ) {
 
   int i;  
-  
+
+  //SCANLINE CONVERT STARTS HERE
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
@@ -61,61 +62,53 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 
       int x0, x1, y, 
           yb, ym, yt, 
-          xb, xm, xt;
+	  xb, xm, xt,
+	  b, m, t;
 
       //find B, M, T
       if ( polygons->m[1][i] < polygons->m[1][i+1]){
 	if ( polygons->m[1][i] < polygons->m[1][i+2]){
-	  xb = polygons->m[0][i];
-	  yb = polygons->m[1][i];
+	  b = i;
 	  if ( polygons->m[1][i+1] < polygons->m[1][i+2]){
-	    xm = polygons->m[0][i+1];
-	    ym = polygons->m[1][i+1];
-	    xt = polygons->m[0][i+2];
-	    yt = polygons->m[1][i+2];
+	    m = i + 1;
+	    t = i + 2;
 	  }
 	  else {
-	    xm = polygons->m[0][i+2];
-	    ym = polygons->m[1][i+2];
-	    xt = polygons->m[0][i+1];
-	    yt = polygons->m[1][i+1];
+	    m = i + 2;
+	    t = i + 1;
 	  }
 	}
 	else {
-	  xb = polygons->m[0][i+2];
-	  yb = polygons->m[1][i+2];
-	  xm = polygons->m[0][i];
-	  ym = polygons->m[1][i];
-	  xt = polygons->m[0][i+1];
-	  yt = polygons->m[1][i+1];
+	  b = i + 2;
+	  m = i;
+	  t = i + 1;
 	}
       }
       else {
 	if ( polygons->m[1][i+1] < polygons->m[1][i+2]){
-	  xb = polygons->m[0][i+1];
-	  yb = polygons->m[1][i+1];
+	  b = i + 1;
 	  if ( polygons->m[1][i] < polygons->m[1][i+2]){
-	    xm = polygons->m[0][i];
-	    ym = polygons->m[1][i];
-	    xt = polygons->m[0][i+2];
-	    yt = polygons->m[1][i+2];
+	    m = i;
+	    t = i + 2;
 	  }
 	  else {
-	    xm = polygons->m[0][i+2];
-	    ym = polygons->m[1][i+2];
-	    xt = polygons->m[0][i];
-	    yt = polygons->m[1][i];
+	    m = i + 2;
+	    t = i;
 	  }
 	}
 	else {
-	  xb = polygons->m[0][i+2];
-	  yb = polygons->m[1][i+2];
-	  xm = polygons->m[0][i+1];
-	  ym = polygons->m[1][i+1];
-	  xt = polygons->m[0][i];
-	  yt = polygons->m[1][i];
+	  b = i + 2;
+	  m = i + 1;
+	  t = i;
 	}
       }      
+
+      xb = polygons->m[0][b];
+      yb = polygons->m[1][b];
+      xm = polygons->m[0][m];
+      ym = polygons->m[1][m];
+      xt = polygons->m[0][t];
+      yt = polygons->m[1][t];
 
       if (yb != yt) {
 	double delt0, delt1, dx0, dx1;
@@ -133,7 +126,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 	  delt0 = ((double)xt - xb) / (yt - yb);
 	  if (y < ym) {
 	    delt1 = ((double)xm - xb) / (ym - yb);
-	    draw_line( x0, y, x1, y, s, c );
+	    draw_line( x0, y, x1, y, s, c, zb );
 	  }	
 	  else {
 	    delt1 = ((double)xt - xm) / (yt - ym);
