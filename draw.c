@@ -1,4 +1,4 @@
-≈≈≈≈≈≈≈≈#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -61,8 +61,10 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       c.blue = rand() %255;
 
       int x0, x1, y, 
+	  z0, z1,
           yb, ym, yt, 
 	  xb, xm, xt,
+	  zbot, zm, zt,
 	  b, m, t;
 
       //find B, M, T
@@ -105,35 +107,51 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 
       xb = polygons->m[0][b];
       yb = polygons->m[1][b];
+      zbot = polygons->m[2][b];
       xm = polygons->m[0][m];
       ym = polygons->m[1][m];
+      zm = polygons->m[2][m];
       xt = polygons->m[0][t];
       yt = polygons->m[1][t];
+      zt = polygons->m[2][t];
 
       if (yb != yt) {
 	double delt0, delt1, dx0, dx1;
+	double zdelt0, zdelt1, dz0, dz1;
 	x0 = xb;
 	x1 = xb;
+	z0 = zbot;
+	z1 = zbot;
 	if (yb == ym) {
 	  x1 = xm;
+	  z1 = zm;
 	}
 	dx0 = (double)x0;
 	dx1 = (double)x1;
-	
+	dz0 = (double)z0;
+	dz1 = (double)z1;
+
 	for (y = yb; y < yt; y++){
 	  x0 = (int)dx0;
 	  x1 = (int)dx1;
 	  delt0 = ((double)xt - xb) / (yt - yb);
+	  z0 = (int)dz0;
+	  z1 = (int)dz1;
+	  zdelt0 = ((double)zt - zbot) / (yt - yb);
 	  if (y < ym) {
 	    delt1 = ((double)xm - xb) / (ym - yb);
-	    draw_line( x0, y, x1, y, s, c, zb );
+	    zdelt1 = ((double)zm - zbot) / (ym - yb);
+	    draw_line( x0, y, z0, x1, y, z1, s, c, zb );
 	  }	
 	  else {
 	    delt1 = ((double)xt - xm) / (yt - ym);
-	    draw_line( x0, y, x1, y, s, c );
-	  }
+	    zdelt1 = ((double)zt - zm) / (yt - ym);
+	    draw_line( x0, y, z0, x1, y, z1, s, c, zb );
+	  }	
 	  dx0 += delt0;
 	  dx1 += delt1;
+	  dz0 += zdelt0;
+	  dz1 += zdelt1;
 	}
       }
       
@@ -645,7 +663,7 @@ Returns:
 Go through points 2 at a time and call draw_line to add that line
 to the screen
 ====================*/
-void draw_lines( struct matrix * points, screen s, color c) {
+void draw_lines( struct matrix * points, screen s, color c, struct matrix *zb) {
 
   int i;
  
@@ -657,8 +675,8 @@ void draw_lines( struct matrix * points, screen s, color c) {
 
   for ( i = 0; i < points->lastcol - 1; i+=2 ) {
 
-    draw_line( points->m[0][i], points->m[1][i], 
-	       points->m[0][i+1], points->m[1][i+1], s, c);
+    draw_line( points->m[0][i], points->m[1][i], points->m[2][i], 
+	       points->m[0][i+1], points->m[1][i+1], points->m[2][i+1], s, c, zb);
     //FOR DEMONSTRATION PURPOSES ONLY
     //draw extra pixels so points can actually be seen    
     /*

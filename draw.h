@@ -17,7 +17,7 @@ void add_polygons( struct matrix * points,
 		   double x0, double y0, double z0, 
 		   double x1, double y1, double z1,
 		   double x2, double y2, double z2);
-void draw_lines( struct matrix * points, screen s, color c);
+void draw_lines( struct matrix * points, screen s, color c, struct matrix *zb);
 void draw_polygons( struct matrix * points, screen s, color c, struct matrix * zb);
 
 //advanced shapes
