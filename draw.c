@@ -770,7 +770,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
   else { 
 
     //slope > -1: Octant 8 (4)
-    if ( dx > abs(dy) ) {
+    if ( dx > abs(dy) ) { //SEG FAULT!! ---------------------------------------------------------------- 
 
       d = dy + ( dx / 2 );
   
