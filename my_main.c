@@ -248,7 +248,7 @@ void my_main( int polygons ) {
 
   //initialize zb (zbuffer)
   zb = new_matrix(500,500);
-  buffer_init( zb ); //init with LONG_MIN
+  init_z_buffer( zb ); //init with LONG_MIN
   
   color g;
 
