@@ -236,12 +236,6 @@ void print_knobs() {
   ====================*/
 void my_main( int polygons ) {
 
-  //initalize z buffer
-  struct matrix *z_buffer;
-  z_buffer = new_matrix(500, 500);
-  buffer_init( z_buffer ); //init with LONG_MIN
-  
-
   int i, f, j;
   double step;
   double xval, yval, zval, knob_value;
@@ -251,6 +245,10 @@ void my_main( int polygons ) {
   struct stack *s;
   screen t;
   clear_screen(t);
+
+  //initialize zb (zbuffer)
+  zb = new_matrix(500,500);
+  buffer_init( zb ); //init with LONG_MIN
   
   color g;
 
