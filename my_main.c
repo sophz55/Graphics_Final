@@ -259,9 +259,9 @@ void my_main( int polygons ) {
   num_frames = 1;
   step = 5;
  
-  g.red = 0;
-  g.green = 200;
-  g.blue = 255;
+  g.red = 50;
+  g.green = 15;
+  g.blue = 20;
 
   //    ------- SET LIGHT VALUES HERE-------------- 0 < brightness < 255 ------
   //  g.light_brightness = 0;
@@ -272,7 +272,7 @@ void my_main( int polygons ) {
   g.specular_k = .5;
 
   light light_source;
-  light_source.x = 50;
+  light_source.x = 100;
   light_source.y = 70;
   light_source.z = 37;  
   
@@ -289,6 +289,7 @@ void my_main( int polygons ) {
       set_value(lookup_symbol(vn->name), vn->value);
       }*/
   for (f = 0; f < num_frames; f++) {
+    init_z_buffer( zb );
     tmp = new_matrix(4,4); 
     s = new_stack();
     if (num_frames != 1) {

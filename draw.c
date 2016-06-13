@@ -186,18 +186,35 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       red = c.red * c.ambient_k;
       green = c.green * c.ambient_k;
       blue = c.blue * c.ambient_k;
-      
+
+      printf( "ambient_k: %f\n", c.ambient_k);
+      printf( "specular_k: %f\n", c.specular_k);
+      /*
+      printf( "red: %f\n", red );
+      printf( "green: %f\n", green );
+      printf( "init blue: %f\n\n\n\n", blue );
+      */
       //diffuse and specular
       if( new_color_mult > 0 ) {
 	red += new_color_mult * c.specular_k;
 	green += new_color_mult * c.specular_k;
 	blue += new_color_mult * c.specular_k;
+	printf("ran?\n");
       }
+      /*
+      printf( "c.red: %i\n", c.red );
+      printf( "c.green: %i\n", c.green );
+      printf( "c.blue: %i\n\n\n\n", c.blue );
+      */
       c.red += red;
       c.green += green;
       c.blue += blue;
-
-      printf( "red: %i\n", c.red );
+      /*    
+      printf( "red: %i\n", red );
+      printf( "green: %i\n", green );
+      printf( "blue: %i\n", blue ); 
+      */
+      printf( "red: %i\n", c.red);
       printf( "green: %i\n", c.green );
       printf( "blue: %i\n\n\n\n", c.blue );
 
