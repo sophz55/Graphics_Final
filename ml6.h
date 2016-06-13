@@ -24,10 +24,10 @@ struct point_t {
   int red;
   int green;
   int blue;
-  int light_brightness_r; //set light brightness
-  int light_brightness_g; //set light brightness
-  int light_brightness_b; //set light brightness
-  int ambient_k; 
+  int light_brightness; //set light brightness
+  float ambient_k;
+  float diffuse_k;
+  float specular_k;
 } point_t;
 
 /*
