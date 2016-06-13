@@ -14,6 +14,7 @@ for red, green and blue respectively
 #include "display.h"
 #include "matrix.h"
 #include <limits.h> //Use LONG_MIN for smallest possible value in z-buffer
+#include "math.h"
 
 void init_z_buffer( struct matrix* zb ) {
   int x, y;
@@ -88,19 +89,30 @@ pixel 0, 0 located at the lower left corner of the screen
 jdyrlandweaver
 ====================*/
 void plot( screen s, color c, int x, int y, double z, struct matrix *zb ) {
-
+  /*
+  //flat shading sources of light
+  double theta = 50; //angle of light for diffuse
+  double alpha = 70; //angle of light for specular
+  */
   //brightness
   float r = c.light_brightness;
   float g = c.light_brightness;
   float b = c.light_brightness;
   
   //ambient
-  r = r + c.ambient_k;
-  g = g + c.ambient_k;
-  b = b + c.ambient_k;
+  r = r + r * c.ambient_k;
+  g = g + g * c.ambient_k;
+  b = b + b * c.ambient_k;
 
   //diffuse
+  r = r + r * c.diffuse_k * cos( c.theta);
+  g = g + g * c.diffuse_k * cos( c.theta);
+  b = b + b * c.diffuse_k * cos( c.theta);
   
+  //specular
+  r = r + r * c.specular_k * cos( c.alpha);
+  g = g + g * c.specular_k * cos( c.alpha);
+  b = b + b * c.specular_k * cos( c.alpha);
   
   c.red = c.red + r;
   c.green = c.green + g;

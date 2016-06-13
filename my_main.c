@@ -268,6 +268,8 @@ void my_main( int polygons ) {
   g.ambient_k = .5;
   g.diffuse_k = .2;
   g.specular_k = .3;
+  g.theta = 50; //diffuse light source
+  g.alpha = 70; //specular light source
   
   first_pass();
   knobs = second_pass();

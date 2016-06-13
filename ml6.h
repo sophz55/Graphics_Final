@@ -28,6 +28,9 @@ struct point_t {
   float ambient_k;
   float diffuse_k;
   float specular_k;
+  
+  float theta; //angles of light sources
+  float alpha;
 } point_t;
 
 /*
