@@ -247,7 +247,7 @@ void my_main( int polygons ) {
   clear_screen(t);
 
   //initialize zb (zbuffer)
-  zb = new_matrix(500,500);
+  zb = new_matrix( XRES, YRES );
   init_z_buffer( zb ); //init with LONG_MIN
   
   color g;

@@ -60,7 +60,8 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       c.green = rand() %255;
       c.blue = rand() %255;
 
-      int x0, x1, y, 
+      int x0, x1,
+	  y, 
 	  z0, z1,
           yb, ym, yt, 
 	  xb, xm, xt,
@@ -116,8 +117,8 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       zt = polygons->m[2][t];
 
       if (yb != yt) {
-	double delt0, delt1, dx0, dx1;
-	double zdelt0, zdelt1, dz0, dz1;
+	double delt0, delt1, doubx0, doubx1;
+	double zdelt0, zdelt1, doubz0, doubz1;
 	x0 = xb;
 	x1 = xb;
 	z0 = zbot;
@@ -126,17 +127,18 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 	  x1 = xm;
 	  z1 = zm;
 	}
-	dx0 = (double)x0;
-	dx1 = (double)x1;
-	dz0 = (double)z0;
-	dz1 = (double)z1;
+
+	doubx0 = (double)x0;
+	doubx1 = (double)x1;
+	doubz0 = (double)z0;
+	doubz1 = (double)z1;
 
 	for (y = yb; y < yt; y++){
-	  x0 = (int)dx0;
-	  x1 = (int)dx1;
+	  x0 = (int)doubx0;
+	  x1 = (int)doubx1;
 	  delt0 = ((double)xt - xb) / (yt - yb);
-	  z0 = (int)dz0;
-	  z1 = (int)dz1;
+	  z0 = (int)doubz0;
+	  z1 = (int)doubz1;
 	  zdelt0 = ((double)zt - zbot) / (yt - yb);
 	  if (y < ym) {
 	    delt1 = ((double)xm - xb) / (ym - yb);
@@ -148,10 +150,10 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 	    zdelt1 = ((double)zt - zm) / (yt - ym);
 	    draw_line( x0, y, z0, x1, y, z1, s, c, zb );
 	  }	
-	  dx0 += delt0;
-	  dx1 += delt1;
-	  dz0 += zdelt0;
-	  dz1 += zdelt1;
+	  doubx0 += delt0;
+	  doubx1 += delt1;
+	  doubz0 += zdelt0;
+	  doubz1 += zdelt1;
 	}
       }
       
@@ -701,16 +703,16 @@ void draw_lines( struct matrix * points, screen s, color c, struct matrix *zb) {
 }
 
 
-void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c, struct matrix * zb) {
+void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c, struct matrix * zb) {
  
   int x, y, d, dx, dy;
   double z, dz;
 
   x = x0;
   y = y0;
-  z = (double)z0;
+  z = z0;
   
-  //swap points so we're always draing left to right
+  //swap points so we're always drawing left to right
   if ( x0 > x1 ) {
     x = x1;
     y = y1;
@@ -719,9 +721,14 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
   }
 
   //need to know dx and dy for this version
-  dx = (x1 - x) * 2;
-  dy = (y1 - y) * 2;
-  dz = (z1 - z) / sqrt( dx * dx / 4 + dy * dy / 4 + (z1-z) * (z1 - z) );
+  dx = x1 - x;
+  dy = y1 - y;
+  dz = z1 - z;
+
+  dz = dz / sqrt( dx * dx + dy * dy + dz * dz );
+
+  dx *= 2;
+  dy *= 2;
 
   //positive slope: Octants 1, 2 (5 and 6)
   if ( dy > 0 ) {
@@ -731,7 +738,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
       d = dy - ( dx / 2 );
       
       while ( x <= x1 ) {
-	plot(s, c, x, y, (int)z, zb);
+	plot(s, c, x, y, z, zb);
 	
 	if ( d < 0 ) {
 	  x = x + 1;
@@ -751,7 +758,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
       d = ( dy / 2 ) - dx;
       while ( y <= y1 ) {
 	
-	plot(s, c, x, y, (int)z, zb);
+	plot(s, c, x, y, z, zb);
 	if ( d > 0 ) {
 	  y = y + 1;
 	  d = d - dx;
@@ -776,7 +783,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
   
       while ( x <= x1 ) {
 
-	plot(s, c, x, y, (int)z, zb);
+	plot(s, c, x, y, z, zb);
 
 	if ( d > 0 ) {
 	  x = x + 1;
@@ -799,7 +806,7 @@ void draw_line(int x0, int y0, int z0, int x1, int y1, int z1, screen s, color c
 
       while ( y >= y1 ) {
 	
-	plot(s, c, x, y, (int)z, zb );
+	plot(s, c, x, y, z, zb );
 	if ( d < 0 ) {
 	  y = y - 1;
 	  d = d + dx;

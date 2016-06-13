@@ -5,8 +5,8 @@
 
 #define MAX_STEPS 100
 
-void draw_line(int x0, int y0, int z0, 
-	       int x1, int y1, int z1,
+void draw_line(int x0, int y0, double z0, 
+	       int x1, int y1, double z1,
 	       screen s, color c, struct matrix * zb);
 void add_point( struct matrix * points, 
 		 double x, double y, double z);

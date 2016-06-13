@@ -74,7 +74,7 @@ Inputs:   screen s
          color c
          int x
          int y 
-	 int z
+	 double z
 	 struct matrix *zb
 Returns: 
 Sets the color at pixel x, y to the color represented by c
@@ -87,7 +87,7 @@ pixel 0, 0 located at the lower left corner of the screen
 02/12/10 09:09:00
 jdyrlandweaver
 ====================*/
-void plot( screen s, color c, int x, int y, int z, struct matrix *zb ) {
+void plot( screen s, color c, int x, int y, double z, struct matrix *zb ) {
 
   //// Init Z-Buffer first
   
