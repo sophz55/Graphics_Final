@@ -703,7 +703,7 @@ void draw_lines( struct matrix * points, screen s, color c, struct matrix *zb) {
 void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c, struct matrix * zb) {
  
   int x, y, d, dx, dy;
-  double z, dz;
+  double z, dzx, dzy;
 
   x = x0;
   y = y0;
@@ -713,16 +713,18 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
   if ( x0 > x1 ) {
     x = x1;
     y = y1;
+    z = z1;
     x1 = x0;
     y1 = y0;
+    z1 = z0;
   }
 
   //need to know dx and dy for this version
   dx = x1 - x;
   dy = y1 - y;
-  dz = z1 - z;
 
-  dz = dz / sqrt( dx * dx + dy * dy + dz * dz );
+  dzx = (z1 - z) / abs(x1 - x) ;
+  dzy = (z1 - z) / abs(y1 - y) ;
 
   dx *= 2;
   dy *= 2;
@@ -746,7 +748,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
 	  y = y + 1;
 	  d = d + dy - dx;
 	}
-	z += dz;
+	z += dzx;	
       }
     }
     
@@ -754,7 +756,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
     else {
       d = ( dy / 2 ) - dx;
       while ( y <= y1 ) {
-	
+
 	plot(s, c, x, y, z, zb);
 	if ( d > 0 ) {
 	  y = y + 1;
@@ -765,7 +767,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
 	  x = x + 1;
 	  d = d + dy - dx;
 	}
-	z += dz;
+	z += dzy;	
       }
     }
   }
@@ -774,7 +776,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
   else { 
 
     //slope > -1: Octant 8 (4)
-    if ( dx > abs(dy) ) { //SEG FAULT!! ---------------------------------------------------------------- 
+    if ( dx > abs(dy) ) {
 
       d = dy + ( dx / 2 );
   
@@ -791,8 +793,7 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
 	  y = y - 1;
 	  d = d + dy + dx;
 	}
-	z += dz;
-
+	z += dzx;
       }
     }
 
@@ -813,9 +814,10 @@ void draw_line(int x0, int y0, double z0, int x1, int y1, double z1, screen s, c
 	  x = x + 1;
 	  d = d + dy + dx;
 	}
-	z += dz;
+	z += dzy;
       }
     }
   }
+  //  printf( "z %lf, z0 %lf, z1 %lf\n", z, z0, z1);
 }
 
