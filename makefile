@@ -2,7 +2,7 @@ OBJECTS= symtab.o print_pcode.o matrix.o my_main.o display.o draw.o gmath.o stac
 CFLAGS= -g
 LDFLAGS= -lm
 CC= gcc
-FILE= dwrobot.mdl
+FILE= animtest.mdl
 NAME = darkfloral
 
 all: parser

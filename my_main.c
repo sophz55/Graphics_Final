@@ -276,6 +276,7 @@ void my_main( int polygons ) {
       set_value(lookup_symbol(vn->name), vn->value);
       }*/
   for (f = 0; f < num_frames; f++) {
+    init_z_buffer(zb);
     tmp = new_matrix(4,4); 
     s = new_stack();
     if (num_frames != 1) {
