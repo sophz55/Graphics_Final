@@ -251,7 +251,10 @@ void my_main( int polygons ) {
   init_z_buffer( zb ); //init with LONG_MIN
   
   color g;
-
+  color ambient;
+  color diffuse;
+  color specular;
+  
   struct vary_node **knobs;
   struct vary_node *vn;
   char frame_name[128];
@@ -263,6 +266,12 @@ void my_main( int polygons ) {
   g.green = 255;
   g.blue = 255;
 
+  //SET LIGHT VALUES HERE;;--------------
+  g.light_brightness_r = 255;
+  g.light_brightness_g = 100;
+  g.light_brightness_b = 0;
+  g.ambient_k = 1; //Use Ambient
+    
   first_pass();
   knobs = second_pass();
 

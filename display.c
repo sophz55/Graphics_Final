@@ -89,8 +89,22 @@ jdyrlandweaver
 ====================*/
 void plot( screen s, color c, int x, int y, double z, struct matrix *zb ) {
 
-  //// Init Z-Buffer first
+  //Calculate color c based on location
+  // Ambient
+  if( c.ambient_k == 1 ) {
+    c.red = c.red + c.light_brightness_r;
+    c.green = c.green + c.light_brightness_g;
+    c.blue = c.blue + c.light_brightness_b;
+
+    if( c.red > MAX_COLOR )
+      c.red = MAX_COLOR;
+    if( c.blue > MAX_COLOR )
+      c.blue = MAX_COLOR;
+    if( c.green > MAX_COLOR )
+      c.green = MAX_COLOR;
+  }
   
+  //// Init Z-Buffer first
   int newy = YRES - 1 - y;
   if ( x >= 0 && x < XRES && newy >=0 && newy < YRES ) {
     if( z >= zb->m[x][newy] ) {

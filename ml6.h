@@ -24,6 +24,10 @@ struct point_t {
   int red;
   int green;
   int blue;
+  int light_brightness_r; //set light brightness
+  int light_brightness_g; //set light brightness
+  int light_brightness_b; //set light brightness
+  int ambient_k; 
 } point_t;
 
 /*
@@ -34,7 +38,8 @@ struct point_t {
   c.green = 45;
   c.blue = 187;
 */
-typedef struct point_t color;
+typedef struct point_t color
+
 
 /*
   Likewise, we can use screen as a data type representing
@@ -44,5 +49,7 @@ typedef struct point_t color;
   s[0][0] = c;
 */
 typedef struct point_t screen[XRES][YRES];
+
+
 
 #endif
