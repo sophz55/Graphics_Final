@@ -48,17 +48,18 @@ triangles
 04/16/13 13:13:27
 jdyrlandweaver
 ====================*/
-void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *zb ) {
-
+void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *zb, light light_source) {
+  
   int i;  
-
+  /*
+  */
   //SCANLINE CONVERT STARTS HERE
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
-
+    
     if ( calculate_dot( polygons, i ) < 0 ) {
-      c.red = rand() %255;
-      c.green = rand() %255;
-      c.blue = rand() %255;
+      //      c.red = rand() %255;
+      //      c.green = rand() %255;
+      //      c.blue = rand() %255;
 
       int x0, x1, y, 
 	  yb, ym, yt, 
@@ -116,6 +117,100 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       zm = polygons->m[2][m];
       zt = polygons->m[2][t];
 
+      printf( "x: %i, y: %i, z: %f \n", xb, yb, zbot);
+      
+      /* START HERE FOR FLAT SHADING? */
+      /*        //brightness
+      float red = c.light_brightness;
+      float green = c.light_brightness;
+      float blue = c.light_brightness;
+      */
+      float red = 0;
+      float green = 0;
+      float blue = 0;
+      
+      double ax = xt - xm;
+      double ay = yt - ym;
+      double az = zt - zm;
+      double bx = xm - xb;
+      double by = ym - yb;
+      double bz = zm - zbot;
+      
+      double* normal = calculate_normal( ax, ay, az, bx, by, bz );
+      printf( "normal-x: %i\nnormal-y: %i\nnormal-z: %i\n", normal[0], normal[1], normal[2] );
+      double normal_magnitude = sqrt( normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2] ); 
+
+      //specular
+      double vx = xt - light_source.x;
+      double vy = xt - light_source.y;
+      double vz = xt - light_source.z;
+      //printf("light source x: %i\n lightsource y: %i\n lightsource z: %i\n", light_source.x, light_source.y, light_source.z );
+      printf("vx: %f\n vy: %f\n vz: %f\n", vx, vy, vz );
+      double specular_magnitude = sqrt( vx * vx + vy * vy + vz * vz );
+      printf("specular_magnitude: %f\n", specular_magnitude );
+      double dot_prod = normal[0] * vx + normal[1] * vy + normal[2] * vz;
+      double divide = specular_magnitude * normal_magnitude;
+
+      double diffuse = dot_prod / divide;
+
+      normal[0] = normal[0]/normal_magnitude;
+      normal[1] = normal[1]/normal_magnitude;
+      normal[2] = normal[2]/normal_magnitude;
+      //      double nmag = sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2] );
+      
+      vx = vx/specular_magnitude;
+      vy = vy/specular_magnitude;
+      vz = vz/specular_magnitude;
+      specular_magnitude = sqrt(vx * vx + vy * vy + vz * vz);
+
+      //calculate dot product between specular vector and surface norm
+      double normal_dot = normal[0] * vx + normal[1] * vy + normal[2] * vz;
+	
+      //calc reflection vector
+      int reflection[3];
+      reflection[0] = vx - 2 * normal_dot * normal[0];
+      reflection[1] = vy - 2 * normal_dot * normal[1];
+      reflection[2] = vz - 2 * normal_dot * normal[2];
+
+      //calculate dot product between reflection and view vector [0,0,1]
+      double specdot = reflection[0] * 0 + reflection[1] * 0 + reflection[2] * -1;
+      divide = normal_magnitude * specular_magnitude * 4;
+      double specular = specdot / divide;
+      
+      double new_color_mult = (diffuse + specular ) / 2;
+      if ( new_color_mult >= 1 )
+	new_color_mult = 1;
+      printf( "mags: %f, new color mult: %f\n", specular_magnitude, new_color_mult );
+
+      //ambient
+      red = c.red * c.ambient_k;
+      green = c.green * c.ambient_k;
+      blue = c.blue * c.ambient_k;
+      
+      //diffuse and specular
+      if( new_color_mult > 0 ) {
+	red += new_color_mult * c.specular_k;
+	green += new_color_mult * c.specular_k;
+	blue += new_color_mult * c.specular_k;
+      }
+      c.red += red;
+      c.green += green;
+      c.blue += blue;
+
+      printf( "red: %i\n", c.red );
+      printf( "green: %i\n", c.green );
+      printf( "blue: %i\n\n\n\n", c.blue );
+
+      //don't go over max color
+      if( c.red > MAX_COLOR )
+	c.red = MAX_COLOR;
+      if( c.blue > MAX_COLOR )
+	c.blue = MAX_COLOR;
+      if( c.green > MAX_COLOR )
+	c.green = MAX_COLOR;
+      
+      /* DONT DESTROY ANY MORE*/
+      
       if (yb != yt) {
 	double delt0, delt1, doubx0, doubx1;
 	double zdelt0, zdelt1;

@@ -28,9 +28,9 @@ struct point_t {
   float ambient_k;
   float diffuse_k;
   float specular_k;
-  
+  /*
   float theta; //angles of light sources
-  float alpha;
+  float alpha; */
 } point_t;
 
 /*
@@ -41,7 +41,7 @@ struct point_t {
   c.green = 45;
   c.blue = 187;
 */
-typedef struct point_t color
+typedef struct point_t color;
 
 
 /*
@@ -53,6 +53,11 @@ typedef struct point_t color
 */
 typedef struct point_t screen[XRES][YRES];
 
-
+typedef struct light_src {
+  int x;
+  int y;
+  int z;
+  color c;
+} light;
 
 #endif

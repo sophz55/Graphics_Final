@@ -260,16 +260,21 @@ void my_main( int polygons ) {
   step = 5;
  
   g.red = 0;
-  g.green = 255;
+  g.green = 200;
   g.blue = 255;
 
-  //SET LIGHT VALUES HERE;;-------------- 0 < x < 255
-  g.light_brightness = 150;
+  //    ------- SET LIGHT VALUES HERE-------------- 0 < brightness < 255 ------
+  //  g.light_brightness = 0;
+  //  *******  ambient_k + diffuse_k + specular_k should equal 1 ******
+
   g.ambient_k = .5;
-  g.diffuse_k = .2;
-  g.specular_k = .3;
-  g.theta = 50; //diffuse light source
-  g.alpha = 70; //specular light source
+  g.diffuse_k = 0;
+  g.specular_k = .5;
+
+  light light_source;
+  light_source.x = 50;
+  light_source.y = 70;
+  light_source.z = 37;  
   
   first_pass();
   knobs = second_pass();
@@ -307,7 +312,7 @@ void my_main( int polygons ) {
 		    step);
 	//apply the current top origin
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g, zb );
+	draw_polygons( tmp, t, g, zb, light_source );
 	tmp->lastcol = 0;
       break;
       
@@ -319,7 +324,7 @@ void my_main( int polygons ) {
 		   op[i].op.torus.r1,
 		   step);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g, zb );
+	draw_polygons( tmp, t, g, zb, light_source );
 	tmp->lastcol = 0;
 	break;
 	
@@ -331,7 +336,7 @@ void my_main( int polygons ) {
 		 op[i].op.box.d1[1],
 		 op[i].op.box.d1[2]);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g, zb );
+	draw_polygons( tmp, t, g, zb, light_source );
 	tmp->lastcol = 0;
 	break;
 	

@@ -76,3 +76,4 @@ double calculate_dot( struct matrix *points, int i ) {
   free(normal);  
   return dot;
 }
+

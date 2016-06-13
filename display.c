@@ -94,37 +94,7 @@ void plot( screen s, color c, int x, int y, double z, struct matrix *zb ) {
   double theta = 50; //angle of light for diffuse
   double alpha = 70; //angle of light for specular
   */
-  //brightness
-  float r = c.light_brightness;
-  float g = c.light_brightness;
-  float b = c.light_brightness;
   
-  //ambient
-  r = r + r * c.ambient_k;
-  g = g + g * c.ambient_k;
-  b = b + b * c.ambient_k;
-
-  //diffuse
-  r = r + r * c.diffuse_k * cos( c.theta);
-  g = g + g * c.diffuse_k * cos( c.theta);
-  b = b + b * c.diffuse_k * cos( c.theta);
-  
-  //specular
-  r = r + r * c.specular_k * cos( c.alpha);
-  g = g + g * c.specular_k * cos( c.alpha);
-  b = b + b * c.specular_k * cos( c.alpha);
-  
-  c.red = c.red + r;
-  c.green = c.green + g;
-  c.blue = c.blue + b;
-  
-  if( c.red > MAX_COLOR )
-    c.red = MAX_COLOR;
-  if( c.blue > MAX_COLOR )
-    c.blue = MAX_COLOR;
-  if( c.green > MAX_COLOR )
-    c.green = MAX_COLOR;
-    
   //// Init Z-Buffer first
   int newy = YRES - 1 - y;
   if ( x >= 0 && x < XRES && newy >=0 && newy < YRES ) {
