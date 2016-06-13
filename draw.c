@@ -60,13 +60,12 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
       c.green = rand() %255;
       c.blue = rand() %255;
 
-      int x0, x1,
-	  y, 
-	  z0, z1,
-          yb, ym, yt, 
+      int x0, x1, y, 
+	  yb, ym, yt, 
 	  xb, xm, xt,
-	  zbot, zm, zt,
 	  b, m, t;
+
+      double z0, z1, zbot, zm, zt;
 
       //find B, M, T
       if ( polygons->m[1][i] < polygons->m[1][i+1]){
@@ -108,17 +107,18 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 
       xb = polygons->m[0][b];
       yb = polygons->m[1][b];
-      zbot = polygons->m[2][b];
       xm = polygons->m[0][m];
       ym = polygons->m[1][m];
-      zm = polygons->m[2][m];
       xt = polygons->m[0][t];
       yt = polygons->m[1][t];
+
+      zbot = polygons->m[2][b];
+      zm = polygons->m[2][m];
       zt = polygons->m[2][t];
 
       if (yb != yt) {
 	double delt0, delt1, doubx0, doubx1;
-	double zdelt0, zdelt1, doubz0, doubz1;
+	double zdelt0, zdelt1;
 	x0 = xb;
 	x1 = xb;
 	z0 = zbot;
@@ -130,30 +130,27 @@ void draw_polygons( struct matrix *polygons, screen s, color c, struct matrix *z
 
 	doubx0 = (double)x0;
 	doubx1 = (double)x1;
-	doubz0 = (double)z0;
-	doubz1 = (double)z1;
 
 	for (y = yb; y < yt; y++){
-	  x0 = (int)doubx0;
-	  x1 = (int)doubx1;
 	  delt0 = ((double)xt - xb) / (yt - yb);
-	  z0 = (int)doubz0;
-	  z1 = (int)doubz1;
-	  zdelt0 = ((double)zt - zbot) / (yt - yb);
+	  zdelt0 = (zt - zbot) / (yt - yb);
 	  if (y < ym) {
 	    delt1 = ((double)xm - xb) / (ym - yb);
-	    zdelt1 = ((double)zm - zbot) / (ym - yb);
+	    zdelt1 = (zm - zbot) / (ym - yb);
 	    draw_line( x0, y, z0, x1, y, z1, s, c, zb );
 	  }	
 	  else {
 	    delt1 = ((double)xt - xm) / (yt - ym);
-	    zdelt1 = ((double)zt - zm) / (yt - ym);
+	    zdelt1 = (zt - zm) / (yt - ym);
 	    draw_line( x0, y, z0, x1, y, z1, s, c, zb );
 	  }	
 	  doubx0 += delt0;
 	  doubx1 += delt1;
-	  doubz0 += zdelt0;
-	  doubz1 += zdelt1;
+	  x0 = (int)doubx0;
+	  x1 = (int)doubx1;
+	  z0 += zdelt0;
+	  z1 += zdelt1;
+
 	}
       }
       
