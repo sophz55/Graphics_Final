@@ -1,2 +1,2 @@
 # graphics-final
-Computer Graphics Final Project: scanline conversion, z-buffers
+Computer Graphics Final Project: Samuel Zhang & Sophia Zheng, Period 8
