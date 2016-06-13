@@ -1,2 +1,2 @@
-# animation
-Computer Graphics HW#8: mdl-animation
+# graphics-final
+Computer Graphics Final Project: scanline conversion, z-buffers
