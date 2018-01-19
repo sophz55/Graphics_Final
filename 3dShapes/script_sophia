@@ -1,0 +1,48 @@
+box
+300 0 0 200 100 400
+ident
+xrotate
+20
+yrotate
+20
+translate
+150 200 0
+apply
+torus
+500 250 25 150
+ident
+zrotate
+120
+translate
+250 250 0
+apply
+save
+3d.jpg
+ident
+translate
+-250 -250 0
+xrotate
+-60
+yrotate
+20
+translate
+250 250 0
+apply
+save
+3d.jpg
+sphere
+100 400 100
+apply
+torus
+0 -250 35 175
+ident
+xrotate
+30
+yrotate
+20
+translate
+250 350 0
+apply
+save
+3d.jpg
+quit

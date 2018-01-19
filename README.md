@@ -1,2 +1,2 @@
-# graphics-final
-Computer Graphics Final Project: Samuel Zhang & Sophia Zheng, Period 8
+# graphics
+Select coursework from Computer Graphics, Spring 2016

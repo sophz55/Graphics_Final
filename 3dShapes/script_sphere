@@ -1,0 +1,39 @@
+sphere
+0 0 200
+save
+3d.jpg
+ident
+yrotate
+90
+translate
+250 250 0
+apply
+save
+3d.jpg
+ident
+translate
+-250 -250 0
+yrotate
+-90
+xrotate
+90
+translate
+250 250 0
+apply
+save
+3d.jpg
+ident
+translate
+-250 -250 0
+xrotate
+-60
+yrotate
+20
+zrotate
+70
+translate
+250 250 0
+apply
+save
+3d.jpg
+quit

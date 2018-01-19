@@ -1,0 +1,13 @@
+torus
+0 -250 35 175
+ident
+xrotate
+30
+yrotate
+20
+translate
+250 350 0
+apply
+save
+3d.jpg
+quit

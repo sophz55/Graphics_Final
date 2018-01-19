@@ -1,0 +1,11 @@
+box
+1000 700 0 200 100 400
+ident
+xrotate
+50
+yrotate
+50
+apply
+save
+3d.jpg
+quit
