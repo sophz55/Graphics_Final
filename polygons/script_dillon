@@ -1,0 +1,23 @@
+#Basic Shapes
+clear
+sphere
+0 0 160
+torus
+0 0 30 250
+ident
+zrotate
+60
+apply
+torus
+0 0 30 250
+ident
+zrotate
+-30
+translate
+250 325 0
+xrotate
+30
+apply
+display
+save
+pic.png

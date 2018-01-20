@@ -1,5 +1,6 @@
 # graphics_hw05
 Graphics Homework 05: polygons
+Dillon Zhang (github.com/dillzhang) and Sophia Zheng (github.com/sophz55)
 
 # Running
 Use `make` to run DW's script_3d
